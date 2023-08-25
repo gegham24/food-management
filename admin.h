@@ -30,9 +30,10 @@ public:
     }
    
     void loadingAnimation() ;
-    std::pair<MYSQL_RES *, int> Fetch_User(std::string Current_Admin_ID);
+    void enterPassLog(string & enteredPass, string &enteredName ) ; 
     void checkingConnSQL() ;
-    void adminLogin() ;  
+    void adminLogin() ;
+    void date () ;  
 };
 
 #endif // ADMIN_H
