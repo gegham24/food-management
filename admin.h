@@ -8,6 +8,9 @@
 #include <thread>
 #include <cstdlib>
 #include <unistd.h>
+#include <iomanip> 
+#include <sys/ioctl.h>
+#include <unistd.h>
 using namespace std;
 
 class Admin {
@@ -20,20 +23,24 @@ public:
     Admin(const string& username, const string& password)
         : userName(username), passWord(password) {}
 
-    bool login(const string& enteredPassword) {
-        return passWord == enteredPassword;
+    bool login(const string& enteredPassword ,const string & enteredAdminname) {
+        if( passWord == enteredPassword && userName == enteredAdminname){
+            return true; 
+        } else return false ;
     }
     
     void show () {
        cout << userName << endl << passWord<< endl ;  
 
     }
-   
+    void adminMainPage() ; 
     void loadingAnimation() ;
     void enterPassLog(string & enteredPass, string &enteredName ) ; 
     void checkingConnSQL() ;
     void adminLogin() ;
     void date () ;  
+    
+
 };
 
 #endif // ADMIN_H

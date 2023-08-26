@@ -16,8 +16,10 @@ private:
     char SQLpassword[25] = "FribjdlGNv";
     char database[25] = "sql8641083";
     MYSQL *conn = mysql_init(NULL);
+ 
 
 public:
+    
     SQL();
     bool SQLconnection()
     {
@@ -53,13 +55,13 @@ public:
 {
     if (mysql_real_connect(conn, server, username, SQLpassword, database, 0, nullptr, 0) == nullptr)
     {
-        std::cerr << "Unable to connect with MySQL server\n";
+        std::cerr << "\t\t\t\t\tUnable to connect with MySQL server\n";
         return;
     }
 
     if (mysql_query(conn, "SELECT * FROM Admin"))
     {
-        std::cerr << "Query execution error." << std::endl;
+        std::cerr << "\t\t\t\t\tQuery execution error." << std::endl;
         mysql_close(conn);
         return;
     }
@@ -67,7 +69,7 @@ public:
     MYSQL_RES *result = mysql_store_result(conn);
     if (result == nullptr)
     {
-        std::cerr << "Result fetching error." << std::endl;
+        std::cerr << "\t\t\t\t\tResult fetching error." << std::endl;
         mysql_close(conn);
         return;
     }
@@ -96,10 +98,8 @@ public:
     mysql_close(conn);
 }
 
-    void show () {
-        cout << password <<adminname << endl ; 
-    }
-    void swap  (string & passWord , string & adminName ) {
+   
+    void alignment (string & passWord , string & adminName ) {
           passWord = password ; 
           adminName = adminname ; 
     }

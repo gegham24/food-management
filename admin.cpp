@@ -2,20 +2,46 @@
 #include "SQL.h"
 
 using namespace std;
+
+
+int getTerminalWidth()
+{
+  struct winsize size;
+  ioctl(STDOUT_FILENO, TIOCGWINSZ, &size);
+  return size.ws_col;
+}
+void centeredText(const string &text)
+{
+
+  int terminalWidth = getTerminalWidth();
+
+  int textWidth = text.length();
+  int padding = (terminalWidth - textWidth) / 2;
+
+  cout << setw(padding + textWidth) << text  ;
+}
+void centeredTextEndl(const string &text)
+{
+
+  int terminalWidth = getTerminalWidth();
+
+  int textWidth = text.length();
+  int padding = (terminalWidth - textWidth) / 2;
+
+  cout << setw(padding + textWidth) << text << endl ;
+}
 void header()
 {
   system("clear");
-  cout << "\t\t\t\t\t~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n";
-  cout << "\t\t\t\t\t\t\t FOOD MANAGEMENT \n"
-       << endl;
+  centeredTextEndl("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~");
+  centeredTextEndl("FOOD MANAGEMENT ");
 }
-void Admin::checkingConnSQL()
+void Admin::checkingConnSQL()  
 {
   Admin obj1;
   SQL obj2;
   header();
-  cout << " \t\t\t\t\t Checking connection whit SQL databasa , please white ... \n"
-       << endl;
+  centeredTextEndl("Checking connection whit SQL databasa , please white ..."); 
   sleep(2);
 
   if (obj2.SQLconnection() == true)
@@ -39,7 +65,7 @@ void Admin::loadingAnimation()
 
     header();
 
-    cout << "\t\t\t\t\tLoading: [";
+    cout << "\t\t\t\t\t\t\tLoading: [ "; 
 
     int barWidth = 40;
     int progressWidth = static_cast<int>(barWidth * progress);
@@ -56,38 +82,40 @@ void Admin::loadingAnimation()
       }
     }
 
-    cout << "] " << int(progress * 100.0) << "%" << endl;
+    cout << " ] " << int(progress * 100.0) << "%" << endl;
 
     this_thread::sleep_for(chrono::milliseconds(50));
   }
 
-  cout << "\t\t\t\t\t\t\tLoading complete!" << endl;
+  centeredTextEndl("Loading complete!") ; 
 }
 void Admin::adminLogin()
 {
 
   SQL obj;
+  Admin obj2;
 
   string adminName;
   string adminPass;
 
   obj.SQLgetAdminPassLogin();
-  obj.swap(adminPass, adminName);
+  obj.alignment(adminPass, adminName);
   Admin admin(adminPass, adminName);
 
   sleep(1);
   header();
 
-  cout << "\t\t\t\t\t\tWelcome to the Admin Login Portal\n";
+  centeredTextEndl("Welcome to the Admin Login Portal");
 
   string enteredAdminName;
   string enteredAdminPass;
   Admin::enterPassLog(enteredAdminPass, enteredAdminName);
   int attempt = 0;
-  if (admin.login(enteredAdminPass))
+  if (admin.login(enteredAdminPass , enteredAdminName))
   {
     header();
-    cout << "\t\t\t\t\t\t\tLogin successful!\n";
+  centeredTextEndl("Login successful!");
+    admin.adminMainPage();
   }
   else
   {
@@ -96,21 +124,23 @@ void Admin::adminLogin()
 
       header();
       attempt++;
-      cout << "\t\t\t\t\t\tIncorrect Password Attempt (" << attempt << " of 3):\n";
-      cout << "\t\t\t\t\t\t\t\tTry again !!\n";
+      centeredText("Incorrect Password Attempt (");
+      cout << attempt << " of 3):\n";
+      centeredTextEndl("Try again !!"); 
 
       Admin::enterPassLog(enteredAdminPass, enteredAdminName);
-      if (admin.login(enteredAdminPass))
+      if (admin.login(enteredAdminPass, enteredAdminName))
       {
         header();
-        cout << "\t\t\t\t\t\t\tLogin successful!\n";
+       centeredTextEndl("Login successful!"); 
+        admin.adminMainPage();
         break;
       }
       else if (attempt == 3)
       {
 
         system("clear");
-        cout << "\t\t\t\t\tToo Many Incorrect Password Attempts:\n";
+        centeredTextEndl("Too Many Incorrect Password Attempts:") ; 
         sleep(1);
         exit(1);
       }
@@ -149,6 +179,13 @@ void Admin::date()
 
   cout << result << endl;
 }
+void Admin::adminMainPage()
+{
+
+  header();
+  centeredTextEndl("Main Page");
+}
+
 int main()
 {
   AdminPage();
