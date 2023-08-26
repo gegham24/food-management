@@ -23,21 +23,21 @@ public:
     {
         if (mysql_real_connect(conn, server, username, SQLpassword, database, 0, nullptr, 0) == nullptr)
         {
-            cout<< "Unable to connect with MySQL server\n";
+            cout<< "\t\t\t\t\t\tUnable to connect with MySQL server\n";
             mysql_close(conn);
             return false;
         }
 
         if (mysql_query(conn, "SELECT * FROM Admin"))
         {
-            cout<< "Query execution error." << std::endl;
+            cout<< "\t\t\t\t\tQuery execution error." << std::endl;
             mysql_close(conn);
             return false;
         }
         MYSQL_RES *result = mysql_store_result(conn);
         if (result == nullptr)
         {
-            cout << "Result fetching error." << std::endl;
+            cout << "\t\t\t\t\tResult fetching error." << std::endl;
             mysql_close(conn);
             return false;
         }
