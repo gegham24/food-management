@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <iostream>
 #include <string>
+#include <vector.h>
 using namespace std;
 class SQL
 {
@@ -104,5 +105,53 @@ public:
           adminName = adminname ; 
     }
 };
+SQLgetOilCount () {
+
+
+if (mysql_real_connect(conn, server, username, SQLpassword, database, 0, nullptr, 0) == nullptr)
+    {
+        std::cerr << "\t\t\t\t\tUnable to connect with MySQL server\n";
+        return;
+    }
+
+    if (mysql_query(conn, "SELECT `oil count` FROM User"))
+    {
+        std::cerr << "\t\t\t\t\tQuery execution error." << std::endl;
+        mysql_close(conn);
+        return;
+    }
+
+    MYSQL_RES *result = mysql_store_result(conn);
+    if (result == nullptr)
+    {
+        std::cerr << "\t\t\t\t\tResult fetching error." << std::endl;
+        mysql_close(conn);
+        return;
+    }
+
+    int num_fields = mysql_num_fields(result);
+    MYSQL_ROW row;
+    while ((row = mysql_fetch_row(result)))
+    {
+        for (int i = 0; i < num_fields; ++i)
+        {
+            if (row[i] != nullptr && i == 0)
+            {
+                adminname = row[i];
+              
+            }
+            else if (row[i] != nullptr && i == 1)
+            {
+                password = row[i];
+              
+            }
+        }
+        std::cout << std::endl;
+    }
+
+    mysql_free_result(result);
+    mysql_close(conn);
+
+}
 
 #endif // SQL_H
